@@ -49,7 +49,7 @@ public class CategoryService {
         categoryRepository.delete(category);
     }
 
-    // Get all categories (read-only)
+
     @Transactional(readOnly = true)
     public List<Category> getAllCategories() {
         return categoryRepository.findAll();

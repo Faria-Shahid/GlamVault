@@ -23,6 +23,7 @@ public interface ProductMapping {
     @Mapping(target = "productBrand", expression = "java(mapBrand(dto.getProdBrand(), brandService))")
     Product toProduct(AddProduct dto, @Context CategoryService categoryService, @Context BrandService brandService);
 
+    @Mapping(target = "productId", source = "productId")
     @Mapping(target = "prodName", source = "productName")
     @Mapping(target = "prodImage", source = "productImage")
     @Mapping(target = "prodPrice", source = "productPrice")

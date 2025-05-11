@@ -5,6 +5,7 @@ import com.example.pinkbullmakeup.Entity.Review;
 import com.example.pinkbullmakeup.Service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -21,6 +22,7 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping
     public ResponseEntity<Review> createReview(@Valid @RequestBody AddReview addReview) {
         Review review = reviewService.createReview(addReview);

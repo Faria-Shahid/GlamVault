@@ -18,31 +18,48 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtFilter;
 
-
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .headers(headers -> {
-                    headers.frameOptions(frameOptions -> frameOptions.sameOrigin());
-                })
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
                 .authorizeHttpRequests(auth -> auth
-                                .anyRequest().permitAll()
-//                        .requestMatchers("/api/auth/**").permitAll()
-//                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/customer/**").hasRole("CUSTOMER")
-//                        .anyRequest().authenticated()
+                        // Public endpoints (accessible to all)
+                        .requestMatchers(
+                                "/api/auth/**",                    // login/register
+                                "/api/products/**",                // viewing products
+                                "/api/categories/**",              // viewing categories
+                                "/api/brands/**",                  // viewing brands
+                                "/api/messages",                   // send message via contact us
+                                "/api/chatbot/**"                  // chatbot interactions
+                        ).permitAll()
+
+                        // Customer-only actions (e.g., cart, orders)
+                        .requestMatchers("/api/cart/**", "/api/orders/**", "/api/customer/**").hasRole("CUSTOMER")
+
+                        // Admin-only actions (e.g., adding, updating, deleting products, categories, and brands)
+                        .requestMatchers(
+                                "/api/products/add/**",          // Admin can add products
+                                "/api/products/update/**",       // Admin can update products
+                                "/api/products/delete/**",       // Admin can delete products
+                                "/api/categories/add/**",        // Admin can add categories
+                                "/api/categories/update/**",     // Admin can update categories
+                                "/api/categories/delete/**",     // Admin can delete categories
+                                "/api/brands/add/**",            // Admin can add brands
+                                "/api/brands/update/**",         // Admin can update brands
+                                "/api/brands/delete/**"          // Admin can delete brands
+                        ).hasRole("ADMIN")
+
+                        // All other requests require authentication
+                        .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

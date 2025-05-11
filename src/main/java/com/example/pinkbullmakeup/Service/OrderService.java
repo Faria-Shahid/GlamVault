@@ -20,10 +20,13 @@ public class OrderService {
     private final CartService cartService;
     private final CustomerRepository customerRepository;
 
-    public OrderService(OrderRepository orderRepository, CartService cartService, CustomerRepository customerRepository) {
+    private final ProductService productService;
+
+    public OrderService(OrderRepository orderRepository, CartService cartService, CustomerRepository customerRepository, ProductService productService) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
         this.customerRepository = customerRepository;
+        this.productService = productService;
     }
 
     public List<OrderItem> cartToOrderItemMapping(List<CartItem> cartItemList){
@@ -38,6 +41,8 @@ public class OrderService {
         return orderItems;
     }
 
+
+
     public Order generateOrder(UUID userId, List<CartItem> cartItemList){
         if (cartItemList == null || cartItemList.isEmpty()) {
             throw new IllegalArgumentException("Cannot place an order with an empty cart.");
@@ -46,6 +51,8 @@ public class OrderService {
         Customer customer = customerRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found."));
 
         List<OrderItem> orderItems = cartToOrderItemMapping(cartItemList);
+
+        productService.reduceStockAfterSale(orderItems);
 
         Order order = new Order();
         order.setUser(customer);

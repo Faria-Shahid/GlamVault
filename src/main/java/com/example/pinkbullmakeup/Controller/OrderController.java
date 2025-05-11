@@ -7,6 +7,7 @@ import com.example.pinkbullmakeup.Service.CartService;
 import com.example.pinkbullmakeup.Service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class OrderController {
         return UUID.fromString(jwtUtil.extractUserId(token));
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/place")
     public ResponseEntity<Order> placeOrder(HttpServletRequest request) {
         UUID userId = extractUserId(request);
@@ -41,12 +43,14 @@ public class OrderController {
         return ResponseEntity.ok(order);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @DeleteMapping("/cancel/{orderId}")
     public ResponseEntity<String> cancelOrder(@PathVariable UUID orderId) {
         orderService.cancelOrder(orderId);
         return ResponseEntity.ok("Order canceled successfully.");
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping
     public ResponseEntity<List<Order>> getMyOrders(HttpServletRequest request) {
         UUID userId = extractUserId(request);

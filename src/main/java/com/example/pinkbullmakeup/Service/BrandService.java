@@ -21,6 +21,9 @@ public class BrandService {
     }
 
     public Brand addBrand(String brandName) {
+        if (brandName == null)
+            throw new IllegalArgumentException("Name should not be null");
+
         String name = brandName.trim();
 
         if (brandRepository.existsByBrandName(name)){
@@ -37,10 +40,16 @@ public class BrandService {
         Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new ResourceNotFoundException("Brand with id " + brandId + " not found."));
 
-        brand.setBrandName(newBrandName);
 
+        Optional<Brand> existing = brandRepository.findBrandByBrandName(newBrandName);
+        if (existing.isPresent() && !existing.get().getBrandId().equals(brandId)) {
+            throw new AlreadyExistsException("Brand name '" + newBrandName);
+        }
+
+        brand.setBrandName(newBrandName);
         return brandRepository.save(brand);
     }
+
 
     public void deleteBrand(UUID brandId){
         Brand brand = brandRepository.findById(brandId)

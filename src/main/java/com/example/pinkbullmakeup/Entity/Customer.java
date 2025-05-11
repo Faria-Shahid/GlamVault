@@ -1,10 +1,7 @@
 package com.example.pinkbullmakeup.Entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
@@ -17,6 +14,7 @@ public class Customer {
     private UUID userId;
 
     @NotBlank
+    @Email
     private String email;
 
     @NotBlank

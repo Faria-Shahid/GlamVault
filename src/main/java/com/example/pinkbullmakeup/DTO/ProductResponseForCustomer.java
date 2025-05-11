@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class ProductResponseForCustomer {
+    private String productId;
     private String prodName;
     private String prodImage;
     private String prodCategory;
