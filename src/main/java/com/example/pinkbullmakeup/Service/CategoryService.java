@@ -19,8 +19,10 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+
+
     public Category addCategory(String categoryName) {
-        String name = categoryName.trim();
+        String name = categoryName.toLowerCase().trim();
 
         if (categoryRepository.existsByCategoryName(name)) {
             throw new AlreadyExistsException(name);
@@ -57,7 +59,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public Category findByName(String categoryName) {
-        return categoryRepository.findCategoryByCategoryName(categoryName.trim())
+        return categoryRepository.findCategoryByCategoryName(categoryName.toLowerCase().trim())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found."));
     }
 }

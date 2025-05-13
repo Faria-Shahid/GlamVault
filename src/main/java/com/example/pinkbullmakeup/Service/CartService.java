@@ -60,12 +60,69 @@ public class CartService {
         return cartItem;
     }
 
+//    public CartItem addItemInCart(ItemToAddInCart itemToAddInCart, UUID userId) {
+//        CartItem newItem = itemMapping.toCartItem(itemToAddInCart, productService);
+//
+//        if (!(newItem.getProductInCart().searchShadeInProductList(itemToAddInCart.getShadeName().toLowerCase().trim()))){
+//            throw new ResourceNotFoundException("Shade:" + itemToAddInCart.getShadeName() + " not found.");
+//        }
+//
+//        newItem.setShade(itemToAddInCart.getShadeName());
+//
+//        Customer customer = customerService.findById(userId);
+//
+//        Cart cart = customer.getCart();
+//
+//        if (cart == null) {
+//            // Initialize the cart if null (if logic allows)
+//            cart = new Cart();
+//            cart.setCustomer(customer);
+//            customer.setCart(cart); // Set the cart to the customer
+//            cartRepository.save(cart); // Persist the new cart
+//        }
+//
+//        UUID cartId = cart.getCartId();
+//        UUID productId = newItem.getProductInCart().getProductId();
+//
+//        Optional<CartItem> existingItemOpt = cartItemRepository.findByCart_CartIdAndProductInCart_ProductId(cartId, productId);
+//
+//        if (existingItemOpt.isPresent()) {
+//            CartItem existingItem = existingItemOpt.get();
+//            int updatedQuantity = existingItem.getProductQuantity() + newItem.getProductQuantity();
+//
+//            if (updatedQuantity > 100) {
+//                throw new IllegalArgumentException("Quantity cannot exceed the maximum allowed limit of 100.");
+//            }
+//
+//            existingItem.setProductQuantity(updatedQuantity);
+//
+//            cartItemRepository.save(existingItem);
+//        } else {
+//            cartItemRepository.save(newItem);
+//        }
+//
+//        return existingItemOpt.orElse(newItem);
+//
+//    }
+
     public CartItem addItemInCart(ItemToAddInCart itemToAddInCart, UUID userId) {
         CartItem newItem = itemMapping.toCartItem(itemToAddInCart, productService);
 
+        if (!newItem.getProductInCart().searchShadeInProductList(itemToAddInCart.getShadeName().toLowerCase().trim())) {
+            throw new ResourceNotFoundException("Shade: " + itemToAddInCart.getShadeName() + " not found.");
+        }
+
+        newItem.setShade(itemToAddInCart.getShadeName());
+
         Customer customer = customerService.findById(userId);
 
-        UUID cartId = customer.getCart().getCartId();
+        Cart cart = customer.getCart();
+
+        if (cart == null) {
+            throw new IllegalArgumentException("No null values allowed.");
+        }
+
+        UUID cartId = cart.getCartId();
         UUID productId = newItem.getProductInCart().getProductId();
 
         Optional<CartItem> existingItemOpt = cartItemRepository.findByCart_CartIdAndProductInCart_ProductId(cartId, productId);
@@ -79,15 +136,19 @@ public class CartService {
             }
 
             existingItem.setProductQuantity(updatedQuantity);
-
+            existingItem.setPriceAccordingToQuantity(updatedQuantity * existingItem.getProductInCart().getProductPrice());
             cartItemRepository.save(existingItem);
+
+            return existingItem;
         } else {
+            newItem.setCart(cart);
+            newItem.setProductQuantity(itemToAddInCart.getProductQuantity());
+            newItem.setPriceAccordingToQuantity(newItem.getProductInCart().getProductPrice() * itemToAddInCart.getProductQuantity());
             cartItemRepository.save(newItem);
+            return newItem;
         }
-
-        return existingItemOpt.orElse(newItem);
-
     }
+
 
     public void deleteItemFromCart(UUID userId, UUID cartItemId) {
         Customer customer = customerService.findById(userId);
@@ -111,6 +172,22 @@ public class CartService {
         Cart cart = customer.getCart();
 
         return cart.getItemsInCart();
+    }
+
+    public void clearCart(UUID userId) {
+        Cart cart = cartRepository.findByCustomer_UserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart not found for the user."));
+
+        if (cart.getItemsInCart().isEmpty()) {
+            return;
+        }
+
+        try {
+            cart.getItemsInCart().clear();
+            cartRepository.save(cart);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to clear the cart. Please try again.");
+        }
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,8 @@
 package com.example.pinkbullmakeup.Entity;
 
 import com.example.pinkbullmakeup.ENUMS.DeliveryStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.annotations.UuidGenerator;
@@ -26,6 +28,7 @@ public class Delivery {
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false, unique = true)
+    @JsonBackReference
     private Order order;
 
     public Delivery() {}

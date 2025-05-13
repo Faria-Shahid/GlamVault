@@ -3,18 +3,22 @@ package com.example.pinkbullmakeup.Controller;
 import com.example.pinkbullmakeup.DTO.LoginDTO;
 import com.example.pinkbullmakeup.DTO.SignupDTO;
 import com.example.pinkbullmakeup.Entity.Admin;
+import com.example.pinkbullmakeup.Entity.Cart;
 import com.example.pinkbullmakeup.Entity.Customer;
 import com.example.pinkbullmakeup.Repository.AdminRepository;
+import com.example.pinkbullmakeup.Repository.CartRepository;
 import com.example.pinkbullmakeup.Repository.CustomerRepository;
 import com.example.pinkbullmakeup.Security.JwtUtil;
 import com.example.pinkbullmakeup.Service.SuperbaseService;
 import com.example.pinkbullmakeup.Service.UserContextService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,8 +44,11 @@ public class AuthController {
     @Autowired
     private SuperbaseService service;
 
+    @Autowired
+    private CartRepository cartRepository;
+
     @PostMapping("/signup/admin")
-    public ResponseEntity<?> signupAdmin(@RequestBody SignupDTO request) {
+    public ResponseEntity<?> signupAdmin(@Valid @RequestBody SignupDTO request) {
         if (adminRepo.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Admin already exists");
         }
@@ -57,17 +64,22 @@ public class AuthController {
     }
 
     @PostMapping("/signup/customer")
-    public ResponseEntity<?> signupCustomer(@RequestBody SignupDTO request) {
+    public ResponseEntity<?> signupCustomer(@Valid @RequestBody SignupDTO request) {
         if (customerRepo.findByEmail(request.getEmail()).isPresent()) {
             return ResponseEntity.badRequest().body("Customer already exists");
         }
 
         Customer customer = new Customer();
+        customer.setCity(request.getCity());
+        customer.setPostalCode(request.getPostalCode());
         customer.setName(request.getName());
         customer.setEmail(request.getEmail());
         customer.setPassword(passwordEncoder.encode(request.getPassword())); // Use BCrypt
         customer.setPhoneNumber(request.getPhone());
         customer.setAddress(request.getAddress());
+        Cart cart = new Cart();
+        cart.setCustomer(customer);
+        customer.setCart(cartRepository.save(cart));
 
         customerRepo.save(customer);
 

@@ -18,27 +18,24 @@ public class Product {
     @GeneratedValue
     @UuidGenerator
     private UUID productId;
-
-    @NotBlank
-    @Size(max = 25)
     private String productName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JsonManagedReference
     private Category productCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JsonManagedReference
     private Brand productBrand;
 
-    @NotBlank
+
     @Column(length = 512)
     private String productImage;
 
-    @NotNull
-    @Min(0)
+
     private float productPrice;
 
-    @NotNull
-    @Min(10)
+
     private int productQuantityInStock;
 
     @ElementCollection
@@ -53,7 +50,6 @@ public class Product {
     @JsonManagedReference
     private List<Review> reviews = new ArrayList<>();
 
-
     public Product() {}
 
     public Product( String productName, Category productCategory, Brand productBrand, String productImage, float productPrice, int productQuantityInStock, List<Shade> shades, List<Review> reviews) {
@@ -66,6 +62,16 @@ public class Product {
         this.shades = shades;
         this.reviews = reviews;
     }
+
+    public boolean searchShadeInProductList(String shadeName) {
+        if (shadeName == null) {
+            throw new IllegalArgumentException("Value should not be null.");
+        }
+
+        return shades.stream()
+                .anyMatch(shade -> shade.getShadeName().equals(shadeName));
+    }
+
 
     public UUID getProductId() {
         return productId;

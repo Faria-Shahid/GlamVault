@@ -1,5 +1,6 @@
 package com.example.pinkbullmakeup.Controller;
 
+import com.example.pinkbullmakeup.DTO.BrandResponse;
 import com.example.pinkbullmakeup.Entity.Brand;
 import com.example.pinkbullmakeup.Service.BrandService;
 import jakarta.validation.Valid;
@@ -22,15 +23,15 @@ public class BrandController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Brand> createBrand(@Valid @RequestParam String brandName) {
-        Brand brand = brandService.addBrand(brandName);
+    public ResponseEntity<BrandResponse> createBrand(@Valid @RequestParam String brandName) {
+        BrandResponse brand = brandService.addBrand(brandName);
         return ResponseEntity.created(URI.create("/api/brands/" + brand.getBrandId())).body(brand);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> updateBrand(@Valid @RequestParam String newBrandName, @PathVariable UUID id) {
-        Brand updatedBrand = brandService.updateBrand(newBrandName, id);
+    public ResponseEntity<BrandResponse> updateBrand(@Valid @RequestParam String newBrandName, @PathVariable UUID id) {
+        BrandResponse updatedBrand = brandService.updateBrand(newBrandName, id);
         return ResponseEntity.ok(updatedBrand);
     }
 
@@ -42,14 +43,14 @@ public class BrandController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Brand>> getAllBrands() {
-        List<Brand> brands = brandService.getAllBrands();
+    public ResponseEntity<List<BrandResponse>> getAllBrands() {
+        List<BrandResponse> brands = brandService.getAllBrands();
         return ResponseEntity.ok(brands);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Brand> getBrandByName(@RequestParam String brandName) {
-        Brand brand = brandService.findByName(brandName);
+    public ResponseEntity<BrandResponse> getBrandByName(@RequestParam String brandName) {
+        BrandResponse brand = brandService.findByName(brandName);
         return ResponseEntity.ok(brand);
     }
 }

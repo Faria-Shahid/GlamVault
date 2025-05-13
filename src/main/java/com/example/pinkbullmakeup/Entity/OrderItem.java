@@ -1,5 +1,6 @@
 package com.example.pinkbullmakeup.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -16,26 +17,30 @@ public class OrderItem {
     private UUID orderItemId;
 
     @ManyToOne
-    @NotNull
+    @JsonBackReference
     private Order order;
 
     @ManyToOne
-    @NotNull
     private Product product;
-
-    @NotNull
-    @Min(1)
+   private String shade;
     private int quantity;
-
-    @NotNull
     private float priceAtPurchase;
 
     public OrderItem() {}
 
-    public OrderItem(Product product, int quantity, float priceAtPurchase) {
+    public OrderItem(Product product, int quantity, float priceAtPurchase, String shade) {
         this.product = product;
         this.quantity = quantity;
         this.priceAtPurchase = priceAtPurchase;
+        this.shade = shade;
+    }
+
+    public String getShade() {
+        return shade;
+    }
+
+    public void setShade(String shade) {
+        this.shade = shade;
     }
 
     public UUID getOrderItemId() {

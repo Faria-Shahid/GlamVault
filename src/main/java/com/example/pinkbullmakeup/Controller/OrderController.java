@@ -2,6 +2,7 @@ package com.example.pinkbullmakeup.Controller;
 
 import com.example.pinkbullmakeup.Entity.CartItem;
 import com.example.pinkbullmakeup.Entity.Order;
+import com.example.pinkbullmakeup.Exceptions.ResourceNotFoundException;
 import com.example.pinkbullmakeup.Security.JwtUtil;
 import com.example.pinkbullmakeup.Service.CartService;
 import com.example.pinkbullmakeup.Service.OrderService;
@@ -37,6 +38,10 @@ public class OrderController {
     public ResponseEntity<Order> placeOrder(HttpServletRequest request) {
         UUID userId = extractUserId(request);
         List<CartItem> cartItems = cartService.getAllCartItems(userId);
+
+        if (cartItems.isEmpty()){
+            throw new ResourceNotFoundException("Cart empty.");
+        }
 
         Order order = orderService.generateOrder(userId, cartItems);
 

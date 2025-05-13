@@ -5,6 +5,7 @@ import com.example.pinkbullmakeup.DTO.ProductResponseForCustomer;
 import com.example.pinkbullmakeup.Entity.Brand;
 import com.example.pinkbullmakeup.Entity.Category;
 import com.example.pinkbullmakeup.Entity.Product;
+import com.example.pinkbullmakeup.Entity.Shade;
 import com.example.pinkbullmakeup.Service.BrandService;
 import com.example.pinkbullmakeup.Service.CategoryService;
 import org.mapstruct.*;
@@ -14,11 +15,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductMapping {
 
-    @Mapping(target = "productName", source = "prodName")
+    @Mapping(target = "productName", expression = "java(dto.getProdName().toLowerCase())")
     @Mapping(target = "productImage", source = "prodImage")
     @Mapping(target = "productPrice", source = "prodPrice")
     @Mapping(target = "productQuantityInStock", source = "quantityInStock")
-    @Mapping(target = "shades", source = "shades")
+    @Mapping(target = "shades", expression = "java(toLowerCaseShades(dto.getShades()))")
     @Mapping(target = "productCategory", expression = "java(mapCategory(dto.getProdCategory(), categoryService))")
     @Mapping(target = "productBrand", expression = "java(mapBrand(dto.getProdBrand(), brandService))")
     Product toProduct(AddProduct dto, @Context CategoryService categoryService, @Context BrandService brandService);
@@ -40,6 +41,14 @@ public interface ProductMapping {
     }
 
     default Brand mapBrand(String brandName, @Context BrandService brandService) {
-        return brandService.findByName(brandName);
+        return brandService.findBrandByName(brandName);
+    }
+
+    default List<Shade> toLowerCaseShades(List<Shade> shades) {
+        if (shades == null) return null;
+        return shades.stream()
+                .filter(s -> s.getShadeName() != null && !s.getShadeName().trim().isEmpty())
+                .map(s -> new Shade(s.getShadeName().trim().toLowerCase(), s.getImageUrl()))
+                .toList();
     }
 }

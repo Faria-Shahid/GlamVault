@@ -6,11 +6,7 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 @Embeddable
 public class Shade {
-
-    @NotBlank
     private String shadeName;
-
-    @NotBlank
     private String imageUrl;
 
     public Shade() {

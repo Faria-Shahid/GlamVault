@@ -6,6 +6,7 @@ import com.example.pinkbullmakeup.Entity.CartItem;
 import com.example.pinkbullmakeup.Security.JwtUtil;
 import com.example.pinkbullmakeup.Service.CartService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
-
     private final CartService cartService;
     private final JwtUtil jwtUtil;
 
@@ -39,8 +39,9 @@ public class CartController {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/add")
-    public ResponseEntity<CartItem> addItemToCart(@RequestBody ItemToAddInCart item, HttpServletRequest request) {
+    public ResponseEntity<CartItem> addItemToCart(@Valid @RequestBody ItemToAddInCart item, HttpServletRequest request) {
         UUID userId = extractUserId(request);
+        System.out.println(item.getProductQuantity());
         CartItem savedItem = cartService.addItemInCart(item, userId);
         return ResponseEntity.ok(savedItem);
     }

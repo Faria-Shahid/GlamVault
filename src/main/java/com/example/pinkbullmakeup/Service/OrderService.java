@@ -33,14 +33,13 @@ public class OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (CartItem item : cartItemList){
-            OrderItem orderItem = new OrderItem(item.getProductInCart(),item.getProductQuantity(),item.getProductQuantity());
+            OrderItem orderItem = new OrderItem(item.getProductInCart(),item.getProductQuantity(),item.getProductQuantity(),item.getShade());
 
             orderItems.add(orderItem);
         }
 
         return orderItems;
     }
-
 
 
     public Order generateOrder(UUID userId, List<CartItem> cartItemList){
@@ -58,7 +57,7 @@ public class OrderService {
         order.setUser(customer);
         order.setOrderItems(orderItems);
         order.setTimeOrderPlaced(LocalDateTime.now());
-        order.setTotalPrice(cartService.getCartTotalPrice(customer.getCart().getCartId()));
+        order.setTotalPrice(cartService.getCartTotalPrice(customer.getUserId()));
 
         Delivery delivery = new Delivery();
         delivery.setDeliveryAddress(String.format("%s, %s", customer.getAddress(), customer.getCity()));
@@ -66,7 +65,15 @@ public class OrderService {
         delivery.setStatus(DeliveryStatus.PENDING);
         order.setDeliveryDetails(delivery);
 
-       return orderRepository.save(order);
+       Order savedOrder = orderRepository.save(order);
+
+        try {
+            cartService.clearCart(customer.getUserId());
+        } catch (Exception e) {
+            throw new IllegalStateException("Order placed but failed to clear the cart. Please check your cart.");
+        }
+
+        return savedOrder;
     }
 
     public void cancelOrder(UUID orderId) {

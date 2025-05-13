@@ -1,5 +1,6 @@
 package com.example.pinkbullmakeup.Entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import org.hibernate.annotations.UuidGenerator;
@@ -24,17 +25,21 @@ public class Customer {
     private String phoneNumber;
 
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 25, message = "Size exceeded")
     private String name;
 
     @NotBlank
-    @Size(max = 25)
+    @Size(max = 50, message = "Size exceeded")
     private String address;
 
     @NotBlank
     private String city;
 
-    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @NotBlank
+    private String postalCode;
+
+    @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Cart cart;
 
     public Customer() {}
@@ -48,6 +53,14 @@ public class Customer {
         this.address = address;
         this.city = city;
         this.cart = cart;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getPassword() {
@@ -72,6 +85,9 @@ public class Customer {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+        if (cart != null) {
+            cart.setCustomer(this); // Ensure the link is maintained
+        }
     }
 
     public UUID getUserId() {

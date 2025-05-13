@@ -18,7 +18,7 @@ public class CustomerService {
 
     public Customer findById(UUID customerId){
         return customerRepository.findById(customerId)
-                .orElseThrow(()->new ResourceNotFoundException("Customer with id:" + customerId + " not found."));
+                .orElseThrow(()->new ResourceNotFoundException("Customer with id: " + customerId + " not found."));
     }
 
 }

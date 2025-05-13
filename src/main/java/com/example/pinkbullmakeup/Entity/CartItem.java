@@ -15,17 +15,11 @@ public class CartItem {
     @UuidGenerator
     @GeneratedValue
     private UUID cartItemId;
-
     @ManyToOne
     private Product productInCart;
-
-    @NotNull
-    @Min(1)
-    @Max(100)
     private int productQuantity;
-
-    @NotNull
     private float priceAccordingToQuantity;
+    private String shade;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
@@ -33,9 +27,10 @@ public class CartItem {
     
     public CartItem() {}
 
-    public CartItem(Product productInCart, int productQuantity) {
+    public CartItem(Product productInCart, int productQuantity, String shade) {
         this.productInCart = productInCart;
         this.productQuantity = productQuantity;
+        this.shade = shade;
         calculateAllItemsPrice();
     }
 
@@ -80,12 +75,16 @@ public class CartItem {
         this.cart = cart;
     }
 
+    public String getShade() {
+        return shade;
+    }
+
+    public void setShade(String shade) {
+        this.shade = shade;
+    }
+
     public void calculateAllItemsPrice() {
-        if (productInCart != null && productQuantity >= 1) {
-            priceAccordingToQuantity = productQuantity * productInCart.getProductPrice();
-        } else {
-            priceAccordingToQuantity = 0;
-        }
+        this.priceAccordingToQuantity = priceAccordingToQuantity * productQuantity;
     }
 
 }

@@ -1,10 +1,12 @@
 package com.example.pinkbullmakeup.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,10 +19,10 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<CartItem> itemsInCart;
+    private List<CartItem> itemsInCart = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     private Customer customer;
 
     public Cart() {}

@@ -1,5 +1,6 @@
 package com.example.pinkbullmakeup.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,19 +17,28 @@ public class Brand {
     @UuidGenerator
     private UUID brandId;
 
-    @NotNull
     @Size(max = 25)
     @Column(unique = true)
     private String brandName;
 
-    @OneToMany(mappedBy = "Brand", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
+    @OneToMany(mappedBy = "productBrand", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products = new ArrayList<>();
+
 
     public Brand() {}
 
     public Brand(UUID brandId, String brandName) {
         this.brandId = brandId;
         this.brandName = brandName;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public UUID getBrandId() {

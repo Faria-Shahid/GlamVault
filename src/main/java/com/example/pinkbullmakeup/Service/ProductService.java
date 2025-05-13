@@ -58,7 +58,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductResponseForCustomer> getAllProductsByBrand(String brandName){
-        Brand brand = brandService.findByName(brandName);
+        Brand brand = brandService.findBrandByName(brandName);
 
         List<Product> products = productRepository.findAllByProductBrand(brand);
 
@@ -89,11 +89,15 @@ public class ProductService {
     }
 
     public void deleteProduct(UUID productId) {
-        if (!productRepository.existsById(productId)) {
-            throw new ResourceNotFoundException("Product with id: " + productId + " not found.");
-        }
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product with id: " + productId + " not found."));
+
+
+        product.getShades().clear();
+        productRepository.save(product);
         productRepository.deleteById(productId);
     }
+
 
     public void updateProductPrice(float newPrice,UUID productId){
         Product product = productRepository.findById(productId)

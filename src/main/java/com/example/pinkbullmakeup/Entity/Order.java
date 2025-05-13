@@ -1,5 +1,7 @@
 package com.example.pinkbullmakeup.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -21,9 +23,11 @@ public class Order {
 
     @ManyToOne
     @NotNull
+    @JsonIgnore
     private Customer user;
 
     @NotNull
+    @JsonManagedReference
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
@@ -35,6 +39,7 @@ public class Order {
     private LocalDateTime timeOrderPlaced;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Delivery deliveryDetails;
 
     public Order() {}
@@ -71,7 +76,12 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+        // Establish bidirectional relationships
+        for (OrderItem item : orderItems) {
+            item.setOrder(this);
+        }
     }
+
 
     public float getTotalPrice() {
         return totalPrice;
