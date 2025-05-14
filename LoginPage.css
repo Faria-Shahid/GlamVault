@@ -1,0 +1,148 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff5f3;
+  color: #333;
+}
+
+.LoginContainer {
+  width: 100%;
+    background-color: #fbecea;
+  margin-top: 6%;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.LoginWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 480px;
+  background-color: #fbecea;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease-in-out;
+}
+
+.LoginFormBox {
+  flex: 1;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #fbecea;
+}
+
+.Login-heading {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #8B5E3C;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.LP-div {
+  margin-bottom: 1rem;
+}
+
+.LP-div label {
+  display: block;
+  font-weight: 600;
+  color: #8B5E3C;
+  margin-bottom: 0.3rem;
+  font-size: 1.1rem;
+}
+
+.LP-div input {
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  font-size: 1.05rem;
+  border: 1px solid #e5bcbc;
+  border-radius: 10px;
+  background-color: #fff4f1;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.LP-div input:focus {
+  outline: none;
+  border-color: #8B5E3C;
+  color: #70492b;
+  box-shadow: 0 0 0 4px rgba(139, 94, 60, 0.15);
+}
+
+.Login-btn {
+  width: 100%;
+  padding: 0.95rem;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  background-color: #8B5E3C;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.Login-btn:hover {
+  background-color: #70492b;
+  transform: translateY(-2px);
+}
+
+.error-login {
+  color: #d63031;
+  font-size: 0.95rem;
+  padding-top:0.5rem;
+  /* text-align: center; */
+}
+
+.LoginImageBox {
+  flex: 1.3;
+  background-color: #fbecea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.LoginImage {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 0 16px 16px 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .LoginWrapper {
+    flex-direction: column;
+    border-radius: 16px;
+  }
+
+  .LoginFormBox, .LoginImageBox {
+    width: 100%;
+    padding: 2rem 1.2rem;
+  }
+
+  .LoginImage {
+    max-height: 280px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .Login-heading {
+    font-size: 2rem;
+  }
+}
+.loginSuccess{
+color: green;
+text-align: center;
+font-size: 0.5rem;
+}
