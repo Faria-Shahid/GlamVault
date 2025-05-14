@@ -1,0 +1,84 @@
+#order-received-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #fff7f6;
+}
+
+.order-received-container {
+  width: 100%;
+  background-color: #fbecea;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  color: #5a3b2e;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.order-received-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* Optional inner wrapper for centered readable content */
+.order-received-inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.order-received-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #8b5e3c;
+}
+
+.order-received-message,
+.order-received-delivery {
+  font-size: 18px;
+  margin: 12px 0;
+  color: #4a2f23;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  .order-received-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .order-received-title {
+    font-size: 24px;
+  }
+
+  .order-received-message,
+  .order-received-delivery {
+    font-size: 16px;
+  }
+}
+.gmail-id{
+  font-weight: bolder;
+  font-size: larger;
+   color: #5a3b2e;
+
+}
+.Returnhome{
+  margin-top: 25px;
+  padding: 12px 20px;
+  background-color: #8B5E3C;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.Return-Homee{
+  color: white;
+  text-decoration: none;
+
+}

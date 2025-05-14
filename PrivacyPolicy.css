@@ -1,0 +1,40 @@
+*{
+    padding: 0;
+    margin: 0;
+ 
+}
+.Privacy-container{
+   /* background-color:#fbf9fa; */
+    color:#222;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    padding-top:15%;
+}
+.Our-Email{
+   color:rgb(173, 110, 121);
+    font-weight: bolder;
+}
+.Privacy-heading{
+    padding-bottom:2%;
+}
+.Privacy-div {
+    padding: 2rem;
+    width: 80%; 
+    background-color: #f5e9ef;
+    border-radius: 2rem;
+    /* font-family: 'Georgia', serif; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2%;
+}
+
+.Privacy-text{
+    font-size: 1.2rem;
+    color: #666;
+    /* font-style: italic; */
+    line-height: 1.4;
+}
