@@ -1,0 +1,151 @@
+.additional-signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  margin-top: 9%;
+  background-color: #fbecea;
+  padding: 1rem;
+  width: 100%;
+}
+
+.additional-signup-wrapper {
+  display: flex;
+  background-color:#fbecea;
+  width: 100%;
+  max-width: 1200px; /* You can adjust the max-width as needed */
+  /* border-radius: 16px; */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin: 0 auto; /* Centering the wrapper */
+}
+
+.additional-signup-image-box {
+  width: 40%; /* Adjust width of the image box */
+  height: auto; /* Make the height dynamic */
+  min-height: 100%; /* Ensure it fills the container if the form section is smaller */
+  background-color: #fbecea; /* Match the container's background color */
+  overflow: hidden;
+}
+
+.additional-signup-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Make sure the image covers the area without stretching */
+  display: block;
+}
+
+.additional-signup-form-box {
+  width: 60%; /* Adjust width of the form box */
+  padding: 1.5rem; /* Reduced padding */
+}
+
+.additional-signup-heading {
+  font-size: 24px;
+  font-weight: 600;
+  color: #8B5E3C;
+  text-align: center;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.additional-signup-heading::after {
+  content: '';
+  width: 60px;
+  height: 4px;
+  background-color: #8B5E3C;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -8px;
+  border-radius: 2px;
+}
+
+.additional-signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.additional-signup-div,
+.additional-signup-row {
+  margin-bottom: 1rem;
+}
+
+.additional-signup-row {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.additional-signup-div-half {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.AddSignup-labels {
+  font-weight: bold;
+  color: #8B5E3C;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #dca7a7;
+  border-radius: 8px;
+  background-color: #fff7f6;
+  color: #70492b;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #8B5E3C;
+  box-shadow: 0 0 5px rgba(139, 94, 60, 0.3);
+}
+
+.additional-signup-btn {
+  width: 60%;
+  padding: 0.7rem;
+  margin-left: 25%;
+  font-size: 1.05rem;
+  background-color: #8B5E3C;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 5px 20px rgba(139, 94, 60, 0.3);
+}
+
+.additional-signup-btn:hover {
+  background-color: #70492b;
+  transform: scale(1.02);
+}
+
+.additional-signup-success-msg {
+  background-color: #d4edda;
+  color: #155724;
+  font-weight: 500;
+  padding: 0.8rem 0.7rem;
+  border: 1px solid #c3e6cb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  text-align: center;
+  animation: fadeOut 4s forwards;
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
