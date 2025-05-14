@@ -1,0 +1,130 @@
+.chatbot-container {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 6.4rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  height: 90vh;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.chatbot-container h2 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: bold;
+  color: #b24e6f;
+  margin-bottom: 1.5rem;
+}
+
+.chat-window {
+  background-color: #fbecea;
+  padding: 1rem;
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.user, .bot {
+  padding: 10px 14px;
+  margin: 8px 0;
+  border-radius: 16px;
+  max-width: 75%;
+  line-height: 1.5;
+  font-size: 15px;
+  word-wrap: break-word;
+}
+
+.user {
+  align-self: flex-end;
+  background-color: #e2e0e0cb;
+  color: #333;
+  text-align: right;
+  font-weight: 500;
+}
+
+.bot {
+  align-self: flex-start;
+  background-color: #fff0f5;
+ color: #333;
+  font-weight: 600;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #fff;
+  color: #333;
+  transition: border 0.3s;
+}
+
+.input-area input:focus {
+  border-color: #b24e6f;
+  outline: none;
+}
+
+.input-area button {
+  padding: 10px 18px;
+  background-color: #b24e6f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.input-area button:hover {
+  background-color: #9e3f5c;
+}
+
+.input-area button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #b24e6f;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Scrollbar for chat window */
+.chat-window::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-window::-webkit-scrollbar-track {
+  background: #fbecea;
+}
+
+.chat-window::-webkit-scrollbar-thumb {
+  background: #b24e6f;
+  border-radius: 6px;
+}
